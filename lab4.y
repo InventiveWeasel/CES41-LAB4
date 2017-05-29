@@ -65,6 +65,7 @@ void NaoDeclarado(char *);
 void VerificaInicRef(void);
 void Incompatibilidade(char *);
 void Esperado(char *);
+void NaoEsperado(char *);
 
 int tab = 0;
 void tabular (void);
@@ -76,9 +77,11 @@ void tabular (void);
 	char carac;
 	simbolo simb;
 	int tipoexpr;
+	int nsubscr;
 }
 %type	<simb>		Variable
 %type	<tipoexpr>	Expression  AuxExpr1  AuxExpr2  AuxExpr3  AuxExpr4  Term  Factor
+%type	<nsubscr>	SubscrList
 %token 				CALL
 %token 				CHAR
 %Token 				ELSE
@@ -387,13 +390,31 @@ Variable		:  ID	{
 							else 
 								if(simb->tid != IDVAR)
 									TipoInadequado($1);
+							$<simb>$ = simb;
 						} 
-					SubscrList {$$=simb;}  
+					SubscrList 
+					{
+						$$=$<simb>2;
+						if($$!=NULL){
+							if($$->array == FALSO && $3>0)
+								NaoEsperado("Subscrito\(s)");
+							else if($$->array==VERDADE && $3==0)
+								Esperado("subscrito\(s)");
+							else if($3!=$$->ndims)
+								Incompatibilidade("Numero de subscritos incompativel com o declarado");
+								
+						}
+						
+					}  
 				;
-SubscrList  	:  
-				|  SubscrList  Subscript
+SubscrList  	:  {$$=0;}
+				|  SubscrList  Subscript  {$$=$1+1;}
 				;
 Subscript		:  OPBRAK {printf("[");} AuxExpr4  CLBRAK {printf("]");}
+				{
+					if($3!=INTEIRO && $3!=CARACTERE)
+						Incompatibilidade("Tipo inadequado para subscrito");
+				}
 				;
 FuncCall    	:  ID OPPAR {printf("%s()", $1);} CLPAR
 				|  ID OPPAR {printf("%s(", $1);} ExprList  CLPAR  {printf(")");}
@@ -511,5 +532,10 @@ void Incompatibilidade(char *s){
 
 void Esperado (char *s) {
 		printf ("\n\n***** Esperado: %s *****\n\n", s);
-	}
+}
+
+void NaoEsperado (char *s) {
+	printf ("\n\n***** Nao Esperado: %s *****\n\n", s);
+}
+
 
