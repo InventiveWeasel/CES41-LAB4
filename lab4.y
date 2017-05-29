@@ -64,6 +64,7 @@ void TipoInadequado(char *);
 void NaoDeclarado(char *);
 void VerificaInicRef(void);
 void Incompatibilidade(char *);
+void Esperado(char *);
 
 int tab = 0;
 void tabular (void);
@@ -144,14 +145,24 @@ Elem        	:  ID 	{
 							printf("%s", $1);
 							if(ProcuraSimb($1) != NULL)
 								DeclaracaoRepetida($1);
-							else
-								InsereSimb($1, IDVAR, tipocorrente);
+							else{
+								simb = InsereSimb($1, IDVAR, tipocorrente);
+								simb->array=FALSO;
+								simb->ndims=0;
+							}
 						} DimList
 				;
 DimList	    	: 
-				|  DimList  Dim
+				|  DimList  Dim  {simb->array=VERDADE;}
 				;
-Dim				:  OPBRAK INTCT CLBRAK {printf("[%d]", $2);}
+Dim				:  OPBRAK INTCT CLBRAK 
+				{
+					printf("[%d]", $2);
+					if($2<=0)
+						Esperado("Valor inteiro positivo");
+						simb->ndims++;
+						simb->dims[simb->ndims]=$2;
+				}
 				;
 SubProgs	    :
 				|  SubProgs  SubProgDecl
@@ -449,9 +460,15 @@ void ImprimeTabSimb () {
 			printf ("Classe %d:\n", i);
 			for (s = tabsimb[i]; s!=NULL; s = s->prox){
 				printf ("  (%s, %s", s->cadeia,  nometipid[s->tid]);
-				if (s->tid == IDVAR)
-					printf (", %s, %d, %d", 
-						nometipvar[s->tvar], s->inic, s->ref);
+				if (s->tid == IDVAR){
+					printf (", %s, %d, %d", nometipvar[s->tvar], s->inic, s->ref);
+					if(s->array == VERDADE){
+						int j;
+						printf(", EH ARRAY\n\tndims = %d, dimensoes:", s->ndims);
+						for(j=1; j <= s->ndims; j++)
+							printf(" %d", s->dims[j]);
+					}
+				}
 				printf(")\n");
 			}
 		}
@@ -492,4 +509,7 @@ void Incompatibilidade(char *s){
 	printf ("\n\n***** Incompatibilidade: %s *****\n\n", s);
 }
 
+void Esperado (char *s) {
+		printf ("\n\n***** Esperado: %s *****\n\n", s);
+	}
 
