@@ -33,7 +33,7 @@ while		{return WHILE;}
 write		{return WRITE;}
 {id}		{strcpy (yylval.string, yytext); return ID;}
 {floatct}	{yylval.valreal = atof(yytext); return FLOATCT;}
-{intct}		{yylval.valor = atoi(yytext); return INTCT;}
+{intct}		{yylval.valint = atoi(yytext); return INTCT;}
 {charct}	{strcpy (yylval.string, yytext+1); yylval.string[strlen(yylval.string)-1]='\0'; return CHARCT;}
 {string}	{strcpy (yylval.string, yytext+1); yylval.string[strlen(yylval.string)-1]='\0'; return STRING;}
 "||"		{return OR;}
@@ -87,5 +87,6 @@ void comentario()
 }
 void tabular()
 {
-	for(int i=0; i<tab; i++) printf("    ");
+	int i;
+	for(i=0; i<tab; i++) printf("    ");
 }
