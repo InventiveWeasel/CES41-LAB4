@@ -18,6 +18,8 @@ void comentario (void);
 /* Definicao dos tipos de identificadores */
 #define 	IDPROG	1
 #define 	IDVAR	2
+#define		IDFUNC	3
+#define		IDPROC	4
 
 /* Definicao dos tipos de variaveis */
 #define	NAOVAR		0
@@ -33,7 +35,7 @@ void comentario (void);
 #define MAXDIMS		10
 
 /* Strings para nomes dos tipos de identificadores*/
-char *nometipid[3] = {" ", "IDPROG", "IDVAR"};
+char *nometipid[5] = {" ", "IDPROG", "IDVAR", "IDFUNC", "IDPROC"};
 
 /* Strings para nomes dos tipos de variaveis */
 char *nometipvar[5]={"NAOVAR", "INTEIRO", "LOGICO","REAL", "CARACTERE"};
@@ -175,13 +177,13 @@ SubProgDecl   	:  Header  Decls  CompStat
 Header   		:  FuncHeader
 				|  ProcHeader
 				;
-FuncHeader		:  FUNCTION {tabular(); printf("function ");} Type ID OPPAR {printf("%s(", $4);} FuncHeaderAux
+FuncHeader		:  FUNCTION {tabular(); printf("function ");} Type ID OPPAR {printf("%s(", $4); InsereSimb($4, IDFUNC, NAOVAR);} FuncHeaderAux
 				;
 FuncHeaderAux	:  CLPAR  SCOLON {printf(");\n");}
 				|  ParamList  CLPAR  SCOLON {printf(");\n");}
 				;
-ProcHeader  	:  PROCEDURE ID OPPAR {tabular(); printf("procedure %s(", $2);} CLPAR SCOLON {printf(");\n");}
-				|  PROCEDURE ID OPPAR {tabular(); printf("procedure %s(", $2);} ParamList CLPAR SCOLON {printf(");\n");}
+ProcHeader  	:  PROCEDURE ID OPPAR {tabular(); printf("procedure %s(", $2); InsereSimb($2, IDPROC, NAOVAR);} CLPAR SCOLON {printf(");\n");}
+				|  PROCEDURE ID OPPAR {tabular(); printf("procedure %s(", $2); InsereSimb($2, IDPROC, NAOVAR);} ParamList CLPAR SCOLON {printf(");\n");}
 				;
 ParamList   	:  Parameter
 				|  ParamList  COMMA {printf(", ");} Parameter
@@ -221,7 +223,20 @@ RepeatStat  	:  REPEAT {tabular(); printf("repeat ");} Statement  WHILE OPPAR {p
 						Incompatibilidade("Expressao do comando 'do repeat' deve ser logica");
 				}
 				;
-ForStat	    	:  FOR OPPAR {tabular(); printf("for(");} Variable ASSIGN {printf(" = ");} Expression SCOLON {printf("; ");} Expression SCOLON {printf("; ");} Variable ASSIGN {printf(" = ");} Expression  CLPAR {printf(")\n");} Statement
+ForStat	    	:  FOR OPPAR {tabular(); printf("for(");} Variable ASSIGN {printf(" = ");} Expression SCOLON 
+				{
+					printf("; ");
+					if($4->tid!=IDVAR || $4->tvar!=INTEIRO || $4->tvar!=CARACTERE || $4->array==FALSO)
+						Incompatibilidade("Variavel de inicializacao incompativel para o operador 'for'");
+				}
+					Expression SCOLON {printf("; ");} Variable ASSIGN {printf(" = ");} Expression  CLPAR
+				{
+					printf(")\n");
+					if(strcmp($4->cadeia, $13->cadeia))
+						Incompatibilidade("Variavel de atualizacao deve ser a mesma de inicializacao");
+					if(($7 || $16)!=(INTEIRO || CARACTERE) || $10!=LOGICO)
+						Incompatibilidade("Expressoes de tipo inadequado");
+				} Statement
 				;
 ReadStat   		:  READ OPPAR {tabular(); printf("read(");} ReadList CLPAR SCOLON {printf(");\n");}
 				;
