@@ -27,6 +27,7 @@ void comentario (void);
 #define	LOGICO		2
 #define	REAL		3
 #define	CARACTERE	4
+#define VOID		5
 
 /* Definicao de outras constantes */
 #define	NCLASSHASH	23
@@ -38,16 +39,17 @@ void comentario (void);
 char *nometipid[5] = {" ", "IDPROG", "IDVAR", "IDFUNC", "IDPROC"};
 
 /* Strings para nomes dos tipos de variaveis */
-char *nometipvar[5]={"NAOVAR", "INTEIRO", "LOGICO","REAL", "CARACTERE"};
+char *nometipvar[6]={"NAOVAR", "INTEIRO", "LOGICO","REAL", "CARACTERE", "VOID"};
 
 /* Declaracoes para a tabela de simbolos */
 typedef struct celsimb celsimb;
 typedef celsimb *simbolo;
 struct celsimb{
 	char *cadeia;
-	int tid, tvar, ndims,dims[MAXDIMS+1];
+	int tid, tvar, ndims,dims[MAXDIMS+1], nparams;
 	char inic, ref, array;
 	simbolo prox;
+	int tipparams[20];
 };
 
 /* Variaveis globais para a tabela de simbolos e analise semantica */
@@ -80,10 +82,12 @@ void tabular (void);
 	simbolo simb;
 	int tipoexpr;
 	int nsubscr;
+	int nparams;
 }
 %type	<simb>		Variable
 %type	<tipoexpr>	Expression  AuxExpr1  AuxExpr2  AuxExpr3  AuxExpr4  Term  Factor
 %type	<nsubscr>	SubscrList
+%type	<nparams>	ExprList
 %token 				CALL
 %token 				CHAR
 %Token 				ELSE
@@ -177,18 +181,25 @@ SubProgDecl   	:  Header  Decls  CompStat
 Header   		:  FuncHeader
 				|  ProcHeader
 				;
-FuncHeader		:  FUNCTION {tabular(); printf("function ");} Type ID OPPAR {printf("%s(", $4); InsereSimb($4, IDFUNC, NAOVAR);} FuncHeaderAux
+FuncHeader		:  FUNCTION {tabular(); printf("function ");} Type ID OPPAR {printf("%s(", $4); simb=InsereSimb($4, IDFUNC, NAOVAR); simb->nparams=0;} FuncHeaderAux
 				;
-FuncHeaderAux	:  CLPAR  SCOLON {printf(");\n");}
+FuncHeaderAux	:  CLPAR  SCOLON {printf(");\n"); simb->tipparams[simb->nparams]=VOID;}
 				|  ParamList  CLPAR  SCOLON {printf(");\n");}
 				;
-ProcHeader  	:  PROCEDURE ID OPPAR {tabular(); printf("procedure %s(", $2); InsereSimb($2, IDPROC, NAOVAR);} CLPAR SCOLON {printf(");\n");}
-				|  PROCEDURE ID OPPAR {tabular(); printf("procedure %s(", $2); InsereSimb($2, IDPROC, NAOVAR);} ParamList CLPAR SCOLON {printf(");\n");}
+ProcHeader  	:  PROCEDURE ID OPPAR 
+				{
+					tabular();
+					printf("procedure %s(", $2);
+					simb = InsereSimb($2, IDPROC, NAOVAR);
+					simb->nparams=0;
+					simb->tipparams[simb->nparams]=VOID;
+				} CLPAR SCOLON {printf(");\n");}
+				|  PROCEDURE ID OPPAR {tabular(); printf("procedure %s(", $2); simb = InsereSimb($2, IDPROC, NAOVAR); simb->nparams=0;} ParamList CLPAR SCOLON {printf(");\n");}
 				;
 ParamList   	:  Parameter
 				|  ParamList  COMMA {printf(", ");} Parameter
 				;
-Parameter   	:  Type ID {printf("%s", $2);}
+Parameter   	:  Type ID {printf("%s", $2);simb->tipparams[simb->nparams]=tipocorrente; simb->nparams++;}
 				;
 CompStat		:  OPBRACE {tabular(); printf("\{\n"); tab++;}
 				   StatList  CLBRACE  {tab--; tabular(); printf("}\n");}
@@ -251,8 +262,21 @@ WriteList		:  WriteElem
 WriteElem		:  STRING {printf("\"%s\"", $1);}
 				|  Expression  
 				;
-CallStat    	:  CALL ID OPPAR {tabular(); printf("call %s(", $2);} CLPAR SCOLON {printf(");\n");}
-				|  CALL ID OPPAR {tabular(); printf("call %s(", $2);} ExprList CLPAR SCOLON {printf(");\n");}
+CallStat    	:  CALL ID OPPAR {tabular(); printf("call %s(", $2);} CLPAR SCOLON 
+				{	
+					printf(");\n");
+					simb=ProcuraSimb($2);
+					printf("nparams=%d", simb->nparams);
+					if(simb->nparams!=0)
+						Incompatibilidade("Quantidade de parametros nao compativel");
+				}
+				|  CALL ID OPPAR {tabular(); printf("call %s(", $2);} ExprList CLPAR SCOLON
+				{
+					printf(");\n");
+					simb=ProcuraSimb($2);
+					if(simb->nparams!=$5)
+						Incompatibilidade("Quantidade de parametros nao compativel");
+				}
 				;
 ReturnStat  	:  RETURN {tabular(); printf("return ");} SCOLON {printf(";\n");}
 				|  RETURN {tabular(); printf("return ");} Expression SCOLON {printf(";\n");}
@@ -269,8 +293,8 @@ AssignStat  	: {tabular();} Variable {if($2 != NULL) $2->inic = $2->ref = VERDAD
 						Incompatibilidade("Lado improprio para comando de atribuicao");
 				}
 				;
-ExprList		:  Expression
-				|  ExprList COMMA {printf(", ");} Expression
+ExprList		:  Expression {$$=1;}
+				|  ExprList COMMA {printf(", ");} Expression {$$=$1+1;}
 				;
 Expression  	:  AuxExpr1
 				|  Expression OR {printf(" || ");} AuxExpr1
@@ -432,7 +456,19 @@ Subscript		:  OPBRAK {printf("[");} AuxExpr4  CLBRAK {printf("]");}
 				}
 				;
 FuncCall    	:  ID OPPAR {printf("%s()", $1);} CLPAR
-				|  ID OPPAR {printf("%s(", $1);} ExprList  CLPAR  {printf(")");}
+				{
+					simb=ProcuraSimb($1);
+					printf("nparams=%d", simb->nparams);
+					if(simb->nparams!=0)
+						Incompatibilidade("Quantidade de parametros nao compativel");
+				}
+				|  ID OPPAR {printf("%s(", $1);} ExprList  CLPAR  
+				{
+					printf(")");
+					simb=ProcuraSimb($1);
+					if(simb->nparams!=$4)
+						Incompatibilidade("Quantidade de parametros nao compativel");
+				}
 				;
 %%
 #include "lex.yy.c"
@@ -489,17 +525,24 @@ int hash (char *cadeia) {
 /* ImprimeTabSimb: Imprime todo o conteudo da tabela de simbolos  */
 
 void ImprimeTabSimb () {
-	int i; simbolo s;
+	int i, j; simbolo s;
 	printf ("\n\n   TABELA  DE  SIMBOLOS:\n\n");
 	for (i = 0; i < NCLASSHASH; i++)
 		if (tabsimb[i]) {
 			printf ("Classe %d:\n", i);
 			for (s = tabsimb[i]; s!=NULL; s = s->prox){
 				printf ("  (%s, %s", s->cadeia,  nometipid[s->tid]);
+				if(s->tid == IDFUNC || s->tid == IDPROC){
+					printf("\n\tparams: ");
+					if(s->nparams==0)
+						printf(" VOID");
+					else for(j=0; j < s->nparams; j++){
+						printf(" %s", nometipvar[s->tipparams[j]]);
+					}
+				}
 				if (s->tid == IDVAR){
 					printf (", %s, %d, %d", nometipvar[s->tvar], s->inic, s->ref);
 					if(s->array == VERDADE){
-						int j;
 						printf(", EH ARRAY\n\tndims = %d, dimensoes:", s->ndims);
 						for(j=1; j <= s->ndims; j++)
 							printf(" %d", s->dims[j]);
