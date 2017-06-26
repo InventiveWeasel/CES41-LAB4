@@ -85,6 +85,25 @@ void comentario()
 		}
 	}
 }
+char tratachar(char *s)
+{
+	if (s[1] != '\\') return s[1];
+	else switch(s[2]) {
+		case 'a': return 7;
+		case 'b': return 8;
+		case '\"': return 34;
+		case 't': return 9;
+		case '0': return 0;
+		case 'v': return 11;
+		case '\\': return 92;
+		case 'r': return 13;
+		case 'f': return 12;
+		case 'n': return 10;
+		case '\'': return 39;
+		default: return s[2];
+	}
+	return s[2];
+}
 void tabular()
 {
 	int i;

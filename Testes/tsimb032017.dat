@@ -1,0 +1,49 @@
+program TesteArray;
+
+var
+	int i, j, n, h, v;
+	int cruza[10][10];
+	char B[2][0], C[50], A[50][10][5][4];
+
+{
+    A[4.5][1][2][4] = B[12]['g'];
+    B[12][false] = C[1];
+	h[12] = B;
+	read (B[2]);
+	i = 0;
+	while (i < 10) {
+		j = 0;
+		while (j < 10) {
+			cruza[i][j] = 0;
+			j = j + 1;
+		}
+		i = i + 1;
+	}
+	write (C, B[3], C[1]+B[2][2], A[2][2][2]);
+	write (n, C[3][2], A[2][3][4][5]);
+	write (C*j, j[2]+C, B[2]+2);
+    write (2*B[3], A[2][3][4][5][6]);
+	write ("Mapa de acidentes:\n\n\tNumero de acidentes: ");
+	read (C, B[2]);
+	read (n); write ("\n");
+	i = 1;
+	while (i <= n) {
+		write ("\tCruzamento: ");
+		read (h, v);
+		if (h>=0 && h<=9 && v>=0 && v<=9)
+			cruza[h][v] = cruza[h][v] + 1;
+		i = i + 1;
+	}
+	write ("\n\n");
+	i = 0;
+	while (i < 10) {
+		j = 0;
+		while (j < 10) {
+			write (cruza[i][j]);
+			j = j + 1;
+		}
+		write ("\n");
+      		i = i + 1;
+	}
+	C[4.5] = B[12]['g'];
+}

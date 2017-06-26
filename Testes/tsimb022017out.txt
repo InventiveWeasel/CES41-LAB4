@@ -1,0 +1,68 @@
+program MenorMaior;
+
+var
+    int i, n, num, menor, maior;
+{
+    read(n, i, menor);
+    i = 1;
+    while(i <= n)
+    {
+        read(num);
+        if(i == 1)
+            {
+                menor = num;
+                maior = num;
+            }
+        else
+            {
+                if(num > maior)
+                    maior = num;
+                if(num < menor)
+                    menor = num;
+            }
+        i = i + 1;
+    }
+    write("Maior = ", maior, "\nMenor = ", menor);
+    if(i + 3)
+
+
+***** Incompatibilidade: Expressao do comando 'if' deve ser logica *****
+
+        i = i - 5;
+    while(i * 5)
+
+
+***** Incompatibilidade: Expressao do comando 'while' deve ser logica *****
+
+    i = i / 4;
+}
+num do escopo MenorMaior nao inicializado
+n do escopo MenorMaior nao inicializado
+
+
+   TABELA  DE  SIMBOLOS:
+
+Classe 5:
+  MenorMaior(IDPROG NAOVAR), escopo: null
+	Variaveis:  maior(INTEIRO) menor(INTEIRO) num(INTEIRO) n(INTEIRO) i(INTEIRO)
+
+Classe 7:
+  maior(IDVAR INTEIRO), escopo: MenorMaior
+	Inicializado: 1, Referenciado: 1
+
+Classe 13:
+  i(IDVAR INTEIRO), escopo: MenorMaior
+	Inicializado: 1, Referenciado: 1
+
+Classe 14:
+  num(IDVAR INTEIRO), escopo: MenorMaior
+	Inicializado: 0, Referenciado: 1
+
+Classe 16:
+  menor(IDVAR INTEIRO), escopo: MenorMaior
+	Inicializado: 1, Referenciado: 1
+
+Classe 18:
+  n(IDVAR INTEIRO), escopo: MenorMaior
+	Inicializado: 0, Referenciado: 1
+

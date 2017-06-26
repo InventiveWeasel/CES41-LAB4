@@ -1,0 +1,262 @@
+program ProgramaTeste;
+
+var
+    int gi;
+    logic gl;
+    char gc;
+procedure TesteCorreto(int pi, logic pl, char pc);
+var
+    int vi;
+    logic vl;
+    char vc;
+    float gi, gl, gc;
+{
+    gi = 1;
+    gl = 1;
+    gc = 1;
+    if(pl && (vc == 'z'))
+        vl = true;
+    else
+        vl = false;
+    for(pi = 0; pi < vi; pi = pi + 1)
+    {
+        vl = !vl;
+    }
+    pl = false;
+    while(pl)
+    {
+        pl = false;
+    }
+    repeat
+    {
+        pl = false;
+    }
+    while(pl);
+}
+procedure TesteIncorreto(int pi, logic pl, char pc);
+var
+    int vi;
+    logic vl;
+    char vc;
+{
+    call TesteIncorreto();
+
+
+***** Erro de linguagem: Proibida recursividade. *****
+
+
+
+***** Incompatibilidade: Quantidade de parametros nao compativel. *****
+
+    if(pi + 10)
+
+
+***** Incompatibilidade: Expressao do comando 'if' deve ser logica *****
+
+        vl = true;
+    else
+        vl = false;
+    for(pi = 0; vi; vi = vi + 1)
+
+
+***** Incompatibilidade: Variavel de atualizacao deve ser a mesma de inicializacao *****
+
+
+
+***** Incompatibilidade: Expressoes de tipo inadequado *****
+
+    {
+        vl = !vl;
+    }
+    pi = 0;
+    while(pi)
+
+
+***** Incompatibilidade: Expressao do comando 'while' deve ser logica *****
+
+    {
+        pi = 0;
+    }
+    repeat
+    {
+        pi = 0;
+    }
+    while(pi);
+
+
+***** Incompatibilidade: Expressao do comando 'do repeat' deve ser logica *****
+
+}
+function int ParamIncorreto(int TesteCorreto, logic ProgramaTeste, logic v);
+var
+    logic v
+
+***** Declaracao Repetida: v *****
+
+;
+{
+    return v;
+
+
+***** Incompatibilidade: [return] Compatibilidade de inteiro: esperado inteiro ou caractere. *****
+
+}
+function int ParamCorreto(int p);
+var
+    int v;
+{
+    v = 0;
+    return v + 0;
+}
+{
+    call ParamCorreto(2);
+    call ParamIncorreto(2, false, true);
+    call TesteCorreto(ParamCorreto(0), false, 'a');
+    call TesteCorreto(10, false, 'a');
+    call TesteIncorreto(10, 2.3, 2.3);
+
+
+***** Incompatibilidade: [param] Compatibilidade de caractere: esperado inteiro ou caractere. *****
+
+
+
+***** Incompatibilidade: [param] Compatibilidade de logico: esperado logico. *****
+
+
+
+***** Incompatibilidade: [param] Compatibilidade de inteiro: esperado inteiro ou caractere. *****
+
+    call TesteIncorreto(10, false);
+
+
+***** Incompatibilidade: Quantidade de parametros nao compativel. *****
+
+    call TesteIncorreto(10);
+
+
+***** Incompatibilidade: Quantidade de parametros nao compativel. *****
+
+    call TesteIncorreto();
+
+
+***** Incompatibilidade: Quantidade de parametros nao compativel. *****
+
+    gi = 1;
+}
+gi do escopo TesteCorreto nao referenciado
+gi do escopo ProgramaTeste nao referenciado
+gl do escopo TesteCorreto nao referenciado
+gl do escopo ProgramaTeste nao referenciado
+gl do escopo ProgramaTeste nao inicializado
+vc do escopo TesteIncorreto nao referenciado
+vc do escopo TesteIncorreto nao inicializado
+vc do escopo TesteCorreto nao inicializado
+vi do escopo TesteCorreto nao inicializado
+gc do escopo TesteCorreto nao referenciado
+gc do escopo ProgramaTeste nao referenciado
+gc do escopo ProgramaTeste nao inicializado
+
+
+   TABELA  DE  SIMBOLOS:
+
+Classe 1:
+  gi(IDVAR REAL), escopo: TesteCorreto
+	Inicializado: 1, Referenciado: 0
+
+  gi(IDVAR INTEIRO), escopo: ProgramaTeste
+	Inicializado: 1, Referenciado: 0
+
+Classe 3:
+  v(IDVAR INTEIRO), escopo: ParamCorreto
+	Inicializado: 1, Referenciado: 1
+
+  v(IDVAR LOGICO), escopo: ParamIncorreto
+	Inicializado: 1, Referenciado: 1
+
+Classe 4:
+  pc(IDVAR CARACTERE), escopo: TesteIncorreto
+	Inicializado: 1, Referenciado: 1
+
+  gl(IDVAR REAL), escopo: TesteCorreto
+	Inicializado: 1, Referenciado: 0
+
+  pc(IDVAR CARACTERE), escopo: TesteCorreto
+	Inicializado: 1, Referenciado: 1
+
+  gl(IDVAR LOGICO), escopo: ProgramaTeste
+	Inicializado: 0, Referenciado: 0
+
+Classe 8:
+  ProgramaTeste(IDVAR LOGICO), escopo: ParamIncorreto
+	Inicializado: 1, Referenciado: 1
+
+  ProgramaTeste(IDPROG NAOVAR), escopo: null
+	Funcoes:  ParamCorreto(INTEIRO) ParamIncorreto(INTEIRO) TesteIncorreto(NAOVAR) TesteCorreto(NAOVAR)
+	Variaveis:  gc(CARACTERE) gl(LOGICO) gi(INTEIRO)
+
+Classe 9:
+  TesteCorreto(IDVAR INTEIRO), escopo: ParamIncorreto
+	Inicializado: 1, Referenciado: 1
+
+  TesteCorreto(IDPROC NAOVAR), escopo: ProgramaTeste
+	Parametros (3):  pc(CARACTERE) pl(LOGICO) pi(INTEIRO)
+	Variaveis:  gc(REAL) gl(REAL) gi(REAL) vc(CARACTERE) vl(LOGICO) vi(INTEIRO)
+
+Classe 10:
+  vc(IDVAR CARACTERE), escopo: TesteIncorreto
+	Inicializado: 0, Referenciado: 0
+
+  pi(IDVAR INTEIRO), escopo: TesteIncorreto
+	Inicializado: 1, Referenciado: 1
+
+  vc(IDVAR CARACTERE), escopo: TesteCorreto
+	Inicializado: 0, Referenciado: 1
+
+  pi(IDVAR INTEIRO), escopo: TesteCorreto
+	Inicializado: 1, Referenciado: 1
+
+Classe 12:
+  ParamCorreto(IDFUNC INTEIRO), escopo: ProgramaTeste
+	Parametros (1):  p(INTEIRO)
+	Variaveis:  v(INTEIRO)
+
+Classe 13:
+  pl(IDVAR LOGICO), escopo: TesteIncorreto
+	Inicializado: 1, Referenciado: 1
+
+  pl(IDVAR LOGICO), escopo: TesteCorreto
+	Inicializado: 1, Referenciado: 1
+
+Classe 16:
+  vi(IDVAR INTEIRO), escopo: TesteIncorreto
+	Inicializado: 1, Referenciado: 1
+
+  vi(IDVAR INTEIRO), escopo: TesteCorreto
+	Inicializado: 0, Referenciado: 1
+
+Classe 17:
+  TesteIncorreto(IDPROC NAOVAR), escopo: ProgramaTeste
+	Parametros (3):  pc(CARACTERE) pl(LOGICO) pi(INTEIRO)
+	Variaveis:  vc(CARACTERE) vl(LOGICO) vi(INTEIRO)
+
+Classe 18:
+  gc(IDVAR REAL), escopo: TesteCorreto
+	Inicializado: 1, Referenciado: 0
+
+  gc(IDVAR CARACTERE), escopo: ProgramaTeste
+	Inicializado: 0, Referenciado: 0
+
+Classe 19:
+  vl(IDVAR LOGICO), escopo: TesteIncorreto
+	Inicializado: 1, Referenciado: 1
+
+  vl(IDVAR LOGICO), escopo: TesteCorreto
+	Inicializado: 1, Referenciado: 1
+
+Classe 20:
+  p(IDVAR INTEIRO), escopo: ParamCorreto
+	Inicializado: 1, Referenciado: 1
+
+  ParamIncorreto(IDFUNC INTEIRO), escopo: ProgramaTeste
+	Parametros (3):  v(LOGICO) ProgramaTeste(LOGICO) TesteCorreto(INTEIRO)
+

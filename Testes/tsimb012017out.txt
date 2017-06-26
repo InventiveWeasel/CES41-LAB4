@@ -1,0 +1,205 @@
+program teste;
+
+var
+    int i, jjj, h, tb;
+    logic n, m;
+    float v, i
+
+***** Declaracao Repetida: i *****
+
+;
+    char x, y, z, w;
+{
+    for(n = 1; 
+
+***** Incompatibilidade: Variavel de inicializacao incompativel para o operador 'for' *****
+
+n <= 50
+
+***** Incompatibilidade: Operando improprio para operador relacional *****
+
+; i = i + 1)
+
+
+***** Incompatibilidade: Variavel de atualizacao deve ser a mesma de inicializacao *****
+
+    write("-");
+    for(i = 1; i + 50; i = i + 1)
+
+
+***** Incompatibilidade: Expressoes de tipo inadequado *****
+
+    write("-");
+    for(i = 1; i + 50; i = i < 1)
+
+
+***** Incompatibilidade: Expressoes de tipo inadequado *****
+
+    write("-");
+    x = n && m;
+
+
+***** Incompatibilidade: [assign] Compatibilidade de caractere: esperado inteiro ou caractere. *****
+
+    v = 3.5 * v;
+    y = '@';
+    v = h % tb;
+    h = jjj % 4.2
+
+***** Incompatibilidade: Operando improprio para operador resto *****
+
+;
+    {
+        i = jjj * false
+
+***** Incompatibilidade: Operando improprio para operador aritmetico *****
+
+;
+        jjj = 0;
+    }
+    jjj = n + 1
+
+***** Incompatibilidade: Operando improprio para operador aritmetico *****
+
+;
+    i = i + 1;
+    {
+        i = !i
+
+***** Incompatibilidade: Operando improprio para operador logico *****
+
+;
+
+
+***** Incompatibilidade: [assign] Compatibilidade de inteiro: esperado inteiro ou caractere. *****
+
+        i = i + 1 + z;
+        {
+            i = 0;
+            jjj = 0;
+        }
+        jjj = jjjj
+
+***** Identificador Nao Declarado: jjjj *****
+
+ + teste
+
+***** Identificador Nao Declarado: teste *****
+
+
+
+***** Incompatibilidade: Operando improprio para operador aritmetico *****
+
+;
+    }
+    m = v + 2 > x;
+    m = n != true;
+    m = i >= n
+
+***** Incompatibilidade: Operando improprio para operador relacional *****
+
+;
+    n = m == 4
+
+***** Incompatibilidade: Operador improprio para operador relacional *****
+
+;
+    i = i + 1;
+    n = ~m
+
+***** Incompatibilidade: Operando improprio para menos unario *****
+
+;
+
+
+***** Incompatibilidade: [assign] Compatibilidade de logico: esperado logico. *****
+
+    n = (!m && n) && (m && !n);
+    i = n / 5
+
+***** Incompatibilidade: Operando improprio para operador aritmetico *****
+
+;
+    i = (!m && n) / 5
+
+***** Incompatibilidade: Operando improprio para operador aritmetico *****
+
+;
+    n = (!m || n) && (m || !n);
+    n = (!m || n) && (tb + v)
+
+***** Incompatibilidade: Operando improprio para operador logico *****
+
+;
+    n = (tb + v) || (!m || n)
+
+***** Incompatibilidade: Operando improprio para operador logico *****
+
+;
+    n = (~h + v) * (tb - jjj);
+
+
+***** Incompatibilidade: [assign] Compatibilidade de logico: esperado logico. *****
+
+    i = (!m || n) - 5
+
+***** Incompatibilidade: Operando improprio para operador aritmetico *****
+
+;
+}
+w do escopo teste nao referenciado
+w do escopo teste nao inicializado
+y do escopo teste nao referenciado
+z do escopo teste nao inicializado
+tb do escopo teste nao inicializado
+
+
+   TABELA  DE  SIMBOLOS:
+
+Classe 3:
+  v(IDVAR REAL), escopo: teste
+	Inicializado: 1, Referenciado: 1
+
+Classe 4:
+  w(IDVAR CARACTERE), escopo: teste
+	Inicializado: 0, Referenciado: 0
+
+Classe 5:
+  x(IDVAR CARACTERE), escopo: teste
+	Inicializado: 1, Referenciado: 1
+
+Classe 6:
+  y(IDVAR CARACTERE), escopo: teste
+	Inicializado: 1, Referenciado: 0
+
+Classe 7:
+  z(IDVAR CARACTERE), escopo: teste
+	Inicializado: 0, Referenciado: 1
+
+  tb(IDVAR INTEIRO), escopo: teste
+	Inicializado: 0, Referenciado: 1
+
+Classe 12:
+  h(IDVAR INTEIRO), escopo: teste
+	Inicializado: 1, Referenciado: 1
+
+Classe 13:
+  i(IDVAR INTEIRO), escopo: teste
+	Inicializado: 1, Referenciado: 1
+
+Classe 17:
+  m(IDVAR LOGICO), escopo: teste
+	Inicializado: 1, Referenciado: 1
+
+Classe 18:
+  n(IDVAR LOGICO), escopo: teste
+	Inicializado: 1, Referenciado: 1
+
+Classe 19:
+  jjj(IDVAR INTEIRO), escopo: teste
+	Inicializado: 1, Referenciado: 1
+
+Classe 20:
+  teste(IDPROG NAOVAR), escopo: null
+	Variaveis:  w(CARACTERE) z(CARACTERE) y(CARACTERE) x(CARACTERE) v(REAL) m(LOGICO) n(LOGICO) tb(INTEIRO) h(INTEIRO) jjj(INTEIRO) i(INTEIRO)
+

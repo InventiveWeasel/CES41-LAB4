@@ -1,0 +1,71 @@
+program ProgramaTeste ;
+
+var
+	int gi; logic gl; char gc;
+
+
+procedure TesteCorreto(int pi, logic pl, char pc);
+var int vi; logic vl; char vc; float gi, gl, gc;
+{
+	gi = 1.0;
+	gl = 1.0;
+	gc = 1.0;
+	if (pl && (vc == 'z'))
+		vl = true;
+	else vl = false;
+	for(pi = 0; pi < vi; pi = pi+1){
+		vl = !vl;
+	}
+	pl = false;
+	while(pl){
+		pl = false;
+	}
+	repeat{
+		pl = false;
+	} while(pl);
+}
+
+procedure TesteIncorreto(int pi, logic pl, char pc);
+var int vi; logic vl; char vc;
+{	
+	call TesteIncorreto();
+	
+	if (pi + 10)
+		vl = true;
+	else vl = false;
+	for(pi = 0; vi; vi = vi+1){
+		vl = !vl;
+	}
+	pi = 0;
+	while(pi){
+		pi = 0;
+	}
+	repeat{
+		pi = 0;
+	} while(pi);
+}
+
+function int ParamIncorreto(int TesteCorreto, logic ProgramaTeste, logic v);
+var logic v;
+{
+	return v;
+}
+
+function int ParamCorreto(int p);
+var int v;
+{
+	v = 0;
+	return v + 0;
+}
+
+{
+	call ParamCorreto(2);
+	call ParamIncorreto(2, false, true);
+	call TesteCorreto(ParamCorreto(0), false, 'a');
+	call TesteCorreto(10, false, 'a');
+	call TesteIncorreto(10.0, 2.3, 2.3);
+	call TesteIncorreto(10, false);
+	call TesteIncorreto(10);
+	call TesteIncorreto();
+	gi = 1;
+}
